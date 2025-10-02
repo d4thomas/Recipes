@@ -6,7 +6,7 @@ await initDatabase()
 const recipe = new Recipe({
   title: 'Recipe Test',
   author: 'Daniel Thomas',
-  contents: 'This recipe is stored in a MongoDB database using Mongoose.',
+  contents: 'Ingredient 1, Ingredient 2, ... Ingredient X',
   tags: ['mongoose', 'mongodb', 'recipe'],
   image:
     'https://static.vecteezy.com/system/resources/thumbnails/005/007/528/small/restaurant-food-kitchen-line-icon-illustration-logo-template-suitable-for-many-purposes-free-vector.jpg',
