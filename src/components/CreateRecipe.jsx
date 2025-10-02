@@ -6,11 +6,12 @@ export function CreateRecipe() {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [contents, setContents] = useState('')
+  const [image, setImage] = useState('')
 
   const queryClient = useQueryClient()
 
   const createRecipeMutation = useMutation({
-    mutationFn: () => createRecipe({ title, author, contents }),
+    mutationFn: () => createRecipe({ title, author, contents, image }),
     onSuccess: () => queryClient.invalidateQueries(['recipes']),
   })
 
@@ -40,6 +41,17 @@ export function CreateRecipe() {
           id='create-author'
           value={author}
           onChange={(e) => setAuthor(e.target.value)}
+        />
+      </div>
+      <br />
+      <div>
+        <label htmlFor='create-image'>Image URL: </label>
+        <input
+          type='text'
+          name='create-image'
+          id='create-image'
+          value={image}
+          onChange={(e) => setImage(e.target.value)}
         />
       </div>
       <br />
