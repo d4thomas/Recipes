@@ -26,13 +26,13 @@ jobs:
           context: ./backend
           file: ./backend/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/blog-backend:${{ github.sha }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/recipes-backend:${{ github.sha }}
       - id: deploy-backend
         name: Deploy backend
         uses: google-github-actions/deploy-cloudrun@v1
         with:
-          service: blog-backend
-          image: ${{ secrets.DOCKERHUB_USERNAME }}/blog-backend:${{ github.sha }}
+          service: recipes-backend
+          image: ${{ secrets.DOCKERHUB_USERNAME }}/recipes-backend:${{ github.sha }}
           region: ${{ secrets.GOOGLECLOUD_REGION }}
       - name: Build and push frontend image
         uses: docker/build-push-action@v4
@@ -40,12 +40,12 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/blog-frontend:${{ github.sha }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/recipes-frontend:${{ github.sha }}
           build-args: VITE_BACKEND_URL=${{ steps.deploy-backend.outputs.url }}/api/v1
       - id: deploy-frontend
         name: Deploy frontend
         uses: google-github-actions/deploy-cloudrun@v1
         with:
-          service: blog-frontend
-          image: ${{ secrets.DOCKERHUB_USERNAME }}/blog-frontend:${{ github.sha }}
+          service: recipes-frontend
+          image: ${{ secrets.DOCKERHUB_USERNAME }}/recipes-frontend:${{ github.sha }}
           region: ${{ secrets.GOOGLECLOUD_REGION }}
