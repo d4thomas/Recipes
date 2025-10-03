@@ -6,7 +6,7 @@ export function Recipe({ title, contents, author, image }) {
       <h3>{title}</h3>
       <img src={image} alt={title} />
       <div>
-        <h4>Ingredients:</h4>
+        <h4>Ingredients/Directions:</h4>
         {contents}
       </div>
       {author && (
