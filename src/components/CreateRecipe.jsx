@@ -21,7 +21,7 @@ export function CreateRecipe() {
     createRecipeMutation.mutate()
   }
 
-  if (!token) return <div>Please log in to create new posts.</div>
+  if (!token) return <div>Please log in to create new recipes.</div>
 
   return (
     <form onSubmit={handleSubmit}>
