@@ -5,6 +5,7 @@
     "cloudrun",
     "commitlintrc",
     "DOCKERHUB",
+    "expressjwt",
     "GOOGLECLOUD",
     "MONGOINSTANCE",
     "VITE"
