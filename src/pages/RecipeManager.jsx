@@ -5,6 +5,7 @@ import { RecipeFilter } from '../components/RecipeFilter.jsx'
 import { RecipeSorting } from '../components/RecipeSorting.jsx'
 import { getRecipes } from '../api/recipes.js'
 import { useState } from 'react'
+import { Header } from '../components/Header.jsx'
 
 export function RecipeManager() {
   const [author, setAuthor] = useState('')
@@ -20,6 +21,10 @@ export function RecipeManager() {
 
   return (
     <div style={{ padding: 8 }}>
+      <Header />
+      <br />
+      <hr />
+      <br />
       <CreateRecipe />
       <br />
       <hr />

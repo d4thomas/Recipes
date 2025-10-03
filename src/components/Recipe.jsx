@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types'
+import { User } from './User.jsx'
 
 export function Recipe({ title, contents, author, image }) {
   return (
@@ -12,7 +13,7 @@ export function Recipe({ title, contents, author, image }) {
       {author && (
         <em>
           <br />
-          Added by <strong>{author}</strong>
+          Added by <User id={author} />
         </em>
       )}
     </article>
