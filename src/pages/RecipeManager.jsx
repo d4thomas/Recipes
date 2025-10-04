@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { RecipeList } from '../components/RecipeList.jsx'
 import { CreateRecipe } from '../components/CreateRecipe.jsx'
+import { DeleteRecipe } from '../components/DeleteRecipe.jsx'
 import { RecipeFilter } from '../components/RecipeFilter.jsx'
 import { RecipeSorting } from '../components/RecipeSorting.jsx'
 import { getRecipes } from '../api/recipes.js'
@@ -26,6 +27,10 @@ export function RecipeManager() {
       <hr />
       <br />
       <CreateRecipe />
+      <br />
+      <hr />
+      <br />
+      <DeleteRecipe />
       <br />
       <hr />
       Filter by:

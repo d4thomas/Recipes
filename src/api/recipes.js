@@ -17,3 +17,16 @@ export const createRecipe = async (token, recipe) => {
   })
   return await res.json()
 }
+
+export const deleteRecipe = async (token, recipeId) => {
+  const res = await fetch(
+    `${import.meta.env.VITE_BACKEND_URL}/recipes/${recipeId}`,
+    {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  )
+  if (!res.ok) throw new Error(`${res.status}`)
+}

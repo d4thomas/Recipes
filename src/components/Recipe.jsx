@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import { User } from './User.jsx'
 
-export function Recipe({ title, contents, author, image }) {
+export function Recipe({ _id, title, contents, author, image }) {
   return (
     <article>
       <h3>{title}</h3>
@@ -16,11 +16,13 @@ export function Recipe({ title, contents, author, image }) {
           Added by <User id={author} />
         </em>
       )}
+      <div>Recipe ID: {_id}</div>
     </article>
   )
 }
 
 Recipe.propTypes = {
+  _id: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   contents: PropTypes.string,
   author: PropTypes.string,
