@@ -43,8 +43,8 @@ export async function updateRecipe(
   { title, contents, tags, image },
 ) {
   return await Recipe.findOneAndUpdate(
-    { _id: recipeId },
-    { $set: { title, author: userId, contents, tags, image } },
+    { _id: recipeId, author: userId },
+    { $set: { title, contents, tags, image } },
     { new: true },
   )
 }

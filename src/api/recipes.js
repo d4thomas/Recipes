@@ -30,6 +30,7 @@ export const updateRecipe = async (token, recipeId, updates) => {
       body: JSON.stringify(updates),
     },
   )
+  if (!res.ok) throw new Error(`${res.status}`)
   return await res.json()
 }
 

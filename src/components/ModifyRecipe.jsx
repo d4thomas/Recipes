@@ -13,13 +13,20 @@ export function ModifyRecipe() {
   const queryClient = useQueryClient()
 
   const updateRecipeMutation = useMutation({
-    mutationFn: () => {
+    mutationFn: async () => {
       const updates = {}
       if (title) updates.title = title
       if (contents) updates.contents = contents
       if (image) updates.image = image
-      return updateRecipe(token, recipeId, updates)
+
+      const result = await updateRecipe(token, recipeId, updates)
+      if (!result) {
+        throw new Error()
+      }
+
+      return result
     },
+
     onSuccess: () => {
       queryClient.invalidateQueries(['recipes'])
       setRecipeId('')

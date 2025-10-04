@@ -13,7 +13,12 @@ export function CreateRecipe() {
 
   const createRecipeMutation = useMutation({
     mutationFn: () => createRecipe(token, { title, contents, image }),
-    onSuccess: () => queryClient.invalidateQueries(['recipes']),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['recipes'])
+      setTitle('')
+      setContents('')
+      setImage('')
+    },
   })
 
   const handleSubmit = (e) => {

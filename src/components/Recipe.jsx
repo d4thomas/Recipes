@@ -5,7 +5,8 @@ export function Recipe({ _id, title, contents, author, image }) {
   return (
     <article>
       <h3>{title}</h3>
-      <img src={image} alt={title} />
+      <img src={image} alt={title} style={{ width: '20%', height: 'auto' }} />
+
       <div>
         <h4>Ingredients/Directions:</h4>
         {contents}
