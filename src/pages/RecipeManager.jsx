@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { RecipeList } from '../components/RecipeList.jsx'
 import { CreateRecipe } from '../components/CreateRecipe.jsx'
+import { ModifyRecipe } from '../components/ModifyRecipe.jsx'
 import { DeleteRecipe } from '../components/DeleteRecipe.jsx'
 import { RecipeFilter } from '../components/RecipeFilter.jsx'
 import { RecipeSorting } from '../components/RecipeSorting.jsx'
@@ -30,12 +31,22 @@ export function RecipeManager() {
       <br />
       <hr />
       <br />
+      <ModifyRecipe />
+      <br />
+      <hr />
+      <br />
       <DeleteRecipe />
       <br />
       <hr />
-      Filter by:
+      <b>
+        <i>
+          <u>Filter</u>
+        </i>
+      </b>
+      <br />
+      <br />
       <RecipeFilter
-        field='author'
+        field='Author'
         value={author}
         onChange={(value) => setAuthor(value)}
       />

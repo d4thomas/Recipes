@@ -18,6 +18,21 @@ export const createRecipe = async (token, recipe) => {
   return await res.json()
 }
 
+export const updateRecipe = async (token, recipeId, updates) => {
+  const res = await fetch(
+    `${import.meta.env.VITE_BACKEND_URL}/recipes/${recipeId}`,
+    {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(updates),
+    },
+  )
+  return await res.json()
+}
+
 export const deleteRecipe = async (token, recipeId) => {
   const res = await fetch(
     `${import.meta.env.VITE_BACKEND_URL}/recipes/${recipeId}`,
