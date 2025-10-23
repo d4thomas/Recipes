@@ -1,33 +1,20 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import { RecipeManager } from './pages/RecipeManager.jsx'
-import { Signup } from './pages/Signup.jsx'
+import { HelmetProvider } from 'react-helmet-async'
+import PropTypes from 'prop-types'
 import { AuthContextProvider } from './contexts/AuthContext.jsx'
-import { Login } from './pages/Login.jsx'
 
 const queryClient = new QueryClient()
 
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <RecipeManager />,
-  },
-  {
-    path: '/signup',
-    element: <Signup />,
-  },
-  {
-    path: '/login',
-    element: <Login />,
-  },
-])
-
-export function App() {
+export function App({ children }) {
   return (
-    <QueryClientProvider client={queryClient}>
-      <AuthContextProvider>
-        <RouterProvider router={router} />
-      </AuthContextProvider>
-    </QueryClientProvider>
+    <HelmetProvider>
+      <QueryClientProvider client={queryClient}>
+        <AuthContextProvider>{children}</AuthContextProvider>
+      </QueryClientProvider>
+    </HelmetProvider>
   )
+}
+
+App.propTypes = {
+  children: PropTypes.element.isRequired,
 }

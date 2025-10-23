@@ -46,3 +46,10 @@ export const deleteRecipe = async (token, recipeId) => {
   )
   if (!res.ok) throw new Error(`${res.status}`)
 }
+
+export const getRecipeById = async (recipeId) => {
+  const res = await fetch(
+    `${import.meta.env.VITE_BACKEND_URL}/recipes/${recipeId}`,
+  )
+  return await res.json()
+}

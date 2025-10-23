@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
+import { Helmet } from 'react-helmet-async'
 import { RecipeList } from '../components/RecipeList.jsx'
 import { CreateRecipe } from '../components/CreateRecipe.jsx'
 import { ModifyRecipe } from '../components/ModifyRecipe.jsx'
@@ -23,6 +24,10 @@ export function RecipeManager() {
 
   return (
     <div style={{ padding: 8 }}>
+      <Helmet>
+        <title>Recipe Manager</title>
+        <meta name='description' content='A full-stack React recipe manager' />
+      </Helmet>
       <Header />
       <br />
       <hr />
