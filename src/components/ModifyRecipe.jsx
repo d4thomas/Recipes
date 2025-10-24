@@ -1,6 +1,12 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMutation as useGraphQLMutation } from '@apollo/client/react/index.js'
 import { useState } from 'react'
-import { updateRecipe } from '../api/recipes.js'
+import { Link } from 'react-router-dom'
+import slug from 'slug'
+import {
+  MODIFY_RECIPE,
+  GET_RECIPES,
+  GET_RECIPES_BY_AUTHOR,
+} from '../api/graphql/recipes.js'
 import { useAuth } from '../contexts/AuthContext.jsx'
 
 export function ModifyRecipe() {
@@ -10,35 +16,21 @@ export function ModifyRecipe() {
   const [contents, setContents] = useState('')
   const [image, setImage] = useState('')
 
-  const queryClient = useQueryClient()
-
-  const updateRecipeMutation = useMutation({
-    mutationFn: async () => {
-      const updates = {}
-      if (title) updates.title = title
-      if (contents) updates.contents = contents
-      if (image) updates.image = image
-
-      const result = await updateRecipe(token, recipeId, updates)
-      if (!result) {
-        throw new Error()
-      }
-
-      return result
-    },
-
-    onSuccess: () => {
-      queryClient.invalidateQueries(['recipes'])
-      setRecipeId('')
-      setTitle('')
-      setContents('')
-      setImage('')
-    },
+  const [updateRecipe, { loading, data }] = useGraphQLMutation(MODIFY_RECIPE, {
+    context: { headers: { Authorization: `Bearer ${token}` } },
+    refetchQueries: [GET_RECIPES, GET_RECIPES_BY_AUTHOR],
   })
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    updateRecipeMutation.mutate()
+    const variables = {
+      id: recipeId,
+      title,
+    }
+    if (contents) variables.contents = contents
+    if (image) variables.image = image
+
+    updateRecipe({ variables })
   }
 
   if (!token) return <div>Please log in to modify recipes.</div>
@@ -86,19 +78,21 @@ export function ModifyRecipe() {
       <br />
       <input
         type='submit'
-        value={updateRecipeMutation.isPending ? 'Modifying...' : 'Modify'}
-        disabled={!recipeId || updateRecipeMutation.isPending}
+        value={loading ? 'Modifying...' : 'Modify'}
+        disabled={!recipeId || !title || loading}
       />
-      {updateRecipeMutation.isSuccess ? (
+      {data?.updateRecipe ? (
         <>
           <br />
-          Recipe modified successfully!
-        </>
-      ) : null}
-      {updateRecipeMutation.isError ? (
-        <>
-          <br />
-          Error modifying recipe!
+          Recipe{' '}
+          <Link
+            to={`/recipes/${data.updateRecipe.id}/${slug(
+              data.updateRecipe.title,
+            )}`}
+          >
+            {data.updateRecipe.title}
+          </Link>{' '}
+          modified successfully!
         </>
       ) : null}
     </form>
