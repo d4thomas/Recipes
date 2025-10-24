@@ -79,7 +79,7 @@ export function ViewRecipe({ recipeId }) {
       <hr />
       {recipe ? (
         <div>
-          <Recipe {...recipe} fullRecipe />
+          <Recipe {...recipe} id={recipeId} author={userInfo} fullRecipe />
           <hr /> <RecipeStats recipeId={recipeId} />
         </div>
       ) : (

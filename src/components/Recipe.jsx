@@ -4,19 +4,19 @@ import PropTypes from 'prop-types'
 import { User } from './User.jsx'
 
 export function Recipe({
-  _id,
   title,
   contents,
   author,
   image,
   fullRecipe = false,
+  id,
 }) {
   return (
     <article>
       {fullRecipe ? (
         <h3>{title}</h3>
       ) : (
-        <Link to={`/recipes/${_id}/${slug(title)}`}>
+        <Link to={`/recipes/${id}/${slug(title)}`}>
           <h3>{title}</h3>
         </Link>
       )}
@@ -31,19 +31,19 @@ export function Recipe({
       {!fullRecipe && author && (
         <em>
           <br />
-          Added by <User id={author} />
+          Added by <User {...author} />
         </em>
       )}
-      {!fullRecipe && _id && <div>Recipe ID: {_id}</div>}
+      {!fullRecipe && id && <div>Recipe ID: {id}</div>}
     </article>
   )
 }
 
 Recipe.propTypes = {
-  _id: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   contents: PropTypes.string,
-  author: PropTypes.string,
+  author: PropTypes.shape(User.propTypes),
   image: PropTypes.string,
   fullRecipe: PropTypes.bool,
 }
