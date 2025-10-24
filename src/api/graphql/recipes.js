@@ -70,3 +70,9 @@ export const MODIFY_RECIPE = gql`
     }
   }
 `
+
+export const DELETE_RECIPE = gql`
+  mutation deleteRecipe($id: String!) {
+    deleteRecipe(id: $id)
+  }
+`

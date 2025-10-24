@@ -1,25 +1,24 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMutation as useGraphQLMutation } from '@apollo/client/react/index.js'
 import { useState } from 'react'
-import { deleteRecipe } from '../api/recipes.js'
+import {
+  DELETE_RECIPE,
+  GET_RECIPES,
+  GET_RECIPES_BY_AUTHOR,
+} from '../api/graphql/recipes.js'
 import { useAuth } from '../contexts/AuthContext.jsx'
 
 export function DeleteRecipe() {
   const [token] = useAuth()
   const [recipeId, setRecipeId] = useState('')
 
-  const queryClient = useQueryClient()
-
-  const deleteRecipeMutation = useMutation({
-    mutationFn: () => deleteRecipe(token, recipeId),
-    onSuccess: () => {
-      queryClient.invalidateQueries(['recipes'])
-      setRecipeId('')
-    },
+  const [deleteRecipe, { loading, data }] = useGraphQLMutation(DELETE_RECIPE, {
+    context: { headers: { Authorization: `Bearer ${token}` } },
+    refetchQueries: [GET_RECIPES, GET_RECIPES_BY_AUTHOR],
   })
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    deleteRecipeMutation.mutate()
+    deleteRecipe({ variables: { id: recipeId } })
   }
 
   if (!token) return <div>Please log in to delete recipes.</div>
@@ -39,19 +38,13 @@ export function DeleteRecipe() {
       <br />
       <input
         type='submit'
-        value={deleteRecipeMutation.isPending ? 'Deleting...' : 'Delete'}
-        disabled={!recipeId || deleteRecipeMutation.isPending}
+        value={loading ? 'Deleting...' : 'Delete'}
+        disabled={!recipeId || loading}
       />
-      {deleteRecipeMutation.isSuccess ? (
+      {data?.deleteRecipe ? (
         <>
           <br />
           Recipe deleted successfully!
-        </>
-      ) : null}
-      {deleteRecipeMutation.isError ? (
-        <>
-          <br />
-          Error deleting recipe!
         </>
       ) : null}
     </form>
