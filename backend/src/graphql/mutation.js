@@ -7,7 +7,7 @@ export const mutationSchema = `#graphql
     signupUser(username: String!, password: String!): User
     loginUser(username: String!, password: String!): String
     createRecipe(title: String!, contents: String, tags: [String], image: String): Recipe
-    updateRecipe(id: String!, title: String!, contents: String, tags: [String], image: String): Recipe
+    updateRecipe(id: String!, title: String, contents: String, tags: [String], image: String): Recipe
   }
 `
 

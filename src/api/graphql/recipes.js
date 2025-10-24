@@ -53,7 +53,7 @@ export const CREATE_RECIPE = gql`
 export const MODIFY_RECIPE = gql`
   mutation updateRecipe(
     $id: String!
-    $title: String!
+    $title: String
     $contents: String
     $tags: [String]
     $image: String

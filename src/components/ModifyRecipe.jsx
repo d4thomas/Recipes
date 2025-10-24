@@ -23,10 +23,8 @@ export function ModifyRecipe() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    const variables = {
-      id: recipeId,
-      title,
-    }
+    const variables = { id: recipeId }
+    if (title) variables.title = title
     if (contents) variables.contents = contents
     if (image) variables.image = image
 
@@ -79,7 +77,7 @@ export function ModifyRecipe() {
       <input
         type='submit'
         value={loading ? 'Modifying...' : 'Modify'}
-        disabled={!recipeId || !title || loading}
+        disabled={!recipeId || (!title && !contents && !image) || loading}
       />
       {data?.updateRecipe ? (
         <>
