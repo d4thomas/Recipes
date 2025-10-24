@@ -31,3 +31,42 @@ export const GET_RECIPES_BY_AUTHOR = gql`
     }
   }
 `
+export const CREATE_RECIPE = gql`
+  mutation createRecipe(
+    $title: String!
+    $contents: String
+    $tags: [String!]
+    $image: String
+  ) {
+    createRecipe(
+      title: $title
+      contents: $contents
+      tags: $tags
+      image: $image
+    ) {
+      id
+      title
+    }
+  }
+`
+
+export const MODIFY_RECIPE = gql`
+  mutation updateRecipe(
+    $title: String!
+    $contents: String
+    $tags: [String!]
+    $image: String
+    $id: String!
+  ) {
+    updateRecipe(
+      id: $id
+      title: $title
+      contents: $contents
+      tags: $tags
+      image: $image
+    ) {
+      id
+      title
+    }
+  }
+`
