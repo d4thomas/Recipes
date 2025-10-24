@@ -8,7 +8,8 @@ import {
 export const querySchema = `#graphql
   input RecipesOptions {
     sortBy: String,
-    sortOrder: String
+    sortOrder: String,
+    image: String
   }
   type Query {
       test: String

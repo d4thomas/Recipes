@@ -8,6 +8,7 @@ import { recipesRoutes } from './routes/recipes.js'
 import { userRoutes } from './routes/users.js'
 import { eventRoutes } from './routes/events.js'
 import { typeDefs, resolvers } from './graphql/index.js'
+import { optionalAuth } from './middleware/jwt.js'
 
 dotenv.config()
 
@@ -22,9 +23,17 @@ app.use(bodyParser.json())
 recipesRoutes(app)
 userRoutes(app)
 eventRoutes(app)
-apolloServer
-  .start()
-  .then(() => app.use('/graphql', expressMiddleware(apolloServer)))
+apolloServer.start().then(() =>
+  app.use(
+    '/graphql',
+    optionalAuth,
+    expressMiddleware(apolloServer, {
+      context: async ({ req }) => {
+        return { auth: req.auth }
+      },
+    }),
+  ),
+)
 
 app.get('/', (req, res) => {
   res.send('Hello from Express!')
