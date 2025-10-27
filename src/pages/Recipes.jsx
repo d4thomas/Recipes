@@ -1,4 +1,3 @@
-// import { useQuery } from '@tanstack/react-query'
 import { useQuery as useGraphQLQuery } from '@apollo/client/react/index.js'
 import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
@@ -12,7 +11,7 @@ import { useState } from 'react'
 import { Header } from '../components/Header.jsx'
 import { GET_RECIPES, GET_RECIPES_BY_AUTHOR } from '../api/graphql/recipes.js'
 
-export function RecipeManager() {
+export function Recipes() {
   const [author, setAuthor] = useState('')
   const [sortBy, setSortBy] = useState('createdAt')
   const [sortOrder, setSortOrder] = useState('descending')

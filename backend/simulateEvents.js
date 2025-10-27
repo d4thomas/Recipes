@@ -36,12 +36,16 @@ async function simulateEvents() {
       .map(async (_, p) => {
         const randomUser =
           createdUsers[Math.floor(Math.random() * simulatedUsers)]
-        return await createRecipe(randomUser._id, {
+        const recipe = await createRecipe(randomUser._id, {
           title: `Test Recipe ${p}`,
           contents: `This is a test recipe ${p}`,
           image:
             'https://www.nhlbi.nih.gov/sites/default/files/styles/16x9_crop/public/2025-03/Ultraprocessed%20foods%20display%202%20framed%20-%20shutterstock_2137640529_r.jpg?h=ab94ba44&itok=yrOIN-8T',
         })
+        const randomLikes = Math.floor(Math.random() * 500) + 1
+        await Recipe.findByIdAndUpdate(recipe._id, { likes: randomLikes })
+        recipe.likes = randomLikes
+        return recipe
       }),
   )
   console.log(`created ${createdRecipes.length} recipes`)

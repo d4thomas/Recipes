@@ -4,7 +4,7 @@ import {
   dehydrate,
   HydrationBoundary,
 } from '@tanstack/react-query'
-import { RecipeManager } from './pages/RecipeManager.jsx'
+import { Recipes } from './pages/Recipes.jsx'
 import { Signup } from './pages/Signup.jsx'
 import { Login } from './pages/Login.jsx'
 import { ViewRecipe } from './pages/ViewRecipe.jsx'
@@ -40,7 +40,7 @@ export const routes = [
       const dehydratedState = useLoaderData()
       return (
         <HydrationBoundary state={dehydratedState}>
-          <RecipeManager />
+          <Recipes />
         </HydrationBoundary>
       )
     },
