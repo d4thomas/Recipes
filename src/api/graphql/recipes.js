@@ -7,6 +7,7 @@ export const RECIPE_FIELDS = gql`
     contents
     tags
     image
+    likes
     updatedAt
     createdAt
     author {
@@ -74,5 +75,14 @@ export const MODIFY_RECIPE = gql`
 export const DELETE_RECIPE = gql`
   mutation deleteRecipe($id: String!) {
     deleteRecipe(id: $id)
+  }
+`
+
+export const LIKE_RECIPE = gql`
+  mutation likeRecipe($id: String!) {
+    likeRecipe(id: $id) {
+      id
+      likes
+    }
   }
 `

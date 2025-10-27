@@ -10,6 +10,7 @@ export function Recipe({
   image,
   fullRecipe = false,
   id,
+  likes = 0,
 }) {
   return (
     <article>
@@ -34,6 +35,7 @@ export function Recipe({
           Added by <User {...author} />
         </em>
       )}
+      {!fullRecipe && <div>Likes: {likes}</div>}
       {!fullRecipe && id && <div>Recipe ID: {id}</div>}
     </article>
   )
@@ -46,4 +48,5 @@ Recipe.propTypes = {
   author: PropTypes.shape(User.propTypes),
   image: PropTypes.string,
   fullRecipe: PropTypes.bool,
+  likes: PropTypes.number,
 }

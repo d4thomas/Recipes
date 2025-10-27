@@ -4,6 +4,7 @@ import {
   createRecipe,
   updateRecipe,
   deleteRecipe,
+  likeRecipe,
 } from '../services/recipes.js'
 
 export const mutationSchema = `#graphql
@@ -13,6 +14,7 @@ export const mutationSchema = `#graphql
     createRecipe(title: String!, contents: String, tags: [String], image: String): Recipe
     updateRecipe(id: String!, title: String, contents: String, tags: [String], image: String): Recipe
     deleteRecipe(id: String!): Boolean
+    likeRecipe(id: String!): Recipe
   }
 `
 
@@ -75,6 +77,20 @@ export const mutationResolver = {
       }
       await deleteRecipe(auth.sub, id)
       return true
+    },
+
+    likeRecipe: async (parent, { id }, { auth }) => {
+      if (!auth) {
+        throw new GraphQLError(
+          'You need to be authenticated to perform this action.',
+          {
+            extensions: {
+              code: 'UNAUTHORIZED',
+            },
+          },
+        )
+      }
+      return await likeRecipe(id)
     },
   },
 }

@@ -8,6 +8,7 @@ import { RecipeManager } from './pages/RecipeManager.jsx'
 import { Signup } from './pages/Signup.jsx'
 import { Login } from './pages/Login.jsx'
 import { ViewRecipe } from './pages/ViewRecipe.jsx'
+import { TopRecipes } from './pages/TopRecipes.jsx'
 import { getRecipes, getRecipeById } from './api/recipes.js'
 import { getUserInfo } from './api/users.js'
 
@@ -75,6 +76,42 @@ export const routes = [
       return (
         <HydrationBoundary state={dehydratedState}>
           <ViewRecipe recipeId={recipeId} />
+        </HydrationBoundary>
+      )
+    },
+  },
+  {
+    path: '/top',
+    loader: async () => {
+      const queryClient = new QueryClient()
+      const recipes = await getRecipes({
+        author: '',
+        sortBy: 'likes',
+        sortOrder: 'descending',
+      })
+      await queryClient.prefetchQuery({
+        queryKey: [
+          'recipes',
+          { author: '', sortBy: 'likes', sortOrder: 'descending' },
+        ],
+        queryFn: () => recipes,
+      })
+      const uniqueAuthors = recipes
+        .map((recipe) => recipe.author)
+        .filter((value, index, array) => array.indexOf(value) === index)
+      for (const userId of uniqueAuthors) {
+        await queryClient.prefetchQuery({
+          queryKey: ['users', userId],
+          queryFn: () => getUserInfo(userId),
+        })
+      }
+      return dehydrate(queryClient)
+    },
+    Component() {
+      const dehydratedState = useLoaderData()
+      return (
+        <HydrationBoundary state={dehydratedState}>
+          <TopRecipes />
         </HydrationBoundary>
       )
     },

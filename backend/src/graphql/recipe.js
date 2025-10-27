@@ -8,6 +8,7 @@ export const recipeSchema = `#graphql
     contents: String
     tags: [String!]
     image: String
+    likes: Int!
     createdAt: Float
     updatedAt: Float
   }

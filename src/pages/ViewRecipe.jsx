@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import PropTypes from 'prop-types'
 import { useQuery, useMutation } from '@tanstack/react-query'
+import { useMutation as useGraphQLMutation } from '@apollo/client/react/index.js'
 import { useEffect, useState } from 'react'
 import { Header } from '../components/Header.jsx'
 import { Recipe } from '../components/Recipe.jsx'
@@ -9,8 +10,11 @@ import { getRecipeById } from '../api/recipes.js'
 import { getUserInfo } from '../api/users.js'
 import { recipeTrackEvent } from '../api/events.js'
 import { RecipeStats } from '../components/RecipeStats.jsx'
+import { LIKE_RECIPE } from '../api/graphql/recipes.js'
+import { useAuth } from '../contexts/AuthContext.jsx'
 
 export function ViewRecipe({ recipeId }) {
+  const [token] = useAuth()
   const [session, setSession] = useState()
   const trackEventMutation = useMutation({
     mutationFn: (action) => recipeTrackEvent({ recipeId, action, session }),
@@ -39,6 +43,14 @@ export function ViewRecipe({ recipeId }) {
     enabled: Boolean(recipe?.author),
   })
   const userInfo = userInfoQuery.data ?? {}
+
+  const [likeRecipe, { loading }] = useGraphQLMutation(LIKE_RECIPE, {
+    variables: { id: recipeId },
+    context: { headers: { Authorization: `Bearer ${token}` } },
+    onCompleted: () => {
+      recipeQuery.refetch()
+    },
+  })
 
   function truncate(str, max = 160) {
     if (!str) return str
@@ -80,6 +92,17 @@ export function ViewRecipe({ recipeId }) {
       {recipe ? (
         <div>
           <Recipe {...recipe} id={recipeId} author={userInfo} fullRecipe />
+          <hr />
+          <div>
+            <p>Likes: {recipe.likes ?? 0}</p>
+            {token ? (
+              <button onClick={() => likeRecipe()}>
+                {loading ? 'Liking...' : 'Like Recipe'}
+              </button>
+            ) : (
+              <p>Please log in to like this recipe.</p>
+            )}
+          </div>
           <hr /> <RecipeStats recipeId={recipeId} />
         </div>
       ) : (
