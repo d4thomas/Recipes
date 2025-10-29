@@ -39,19 +39,33 @@ export function Recipes() {
         <Link to='/top'>Top Recipes</Link>
       </h3>
       <hr />
-      <h3>Create Recipe</h3>
-      <CreateRecipe />
+      <br />
+      <details>
+        <summary style={{ fontSize: '1rem', fontWeight: 750 }}>
+          Create Recipe
+        </summary>
+        <br />
+        <CreateRecipe />
+      </details>
+      <br />
+      <details>
+        <summary style={{ fontSize: '1rem', fontWeight: 750 }}>
+          Modify Recipe
+        </summary>
+        <br />
+        <ModifyRecipe />
+      </details>
+      <br />
+      <details>
+        <summary style={{ fontSize: '1rem', fontWeight: 750 }}>
+          Delete Recipe
+        </summary>
+        <br />
+        <DeleteRecipe />
+      </details>
       <br />
       <hr />
-      <h3>Modify Recipe</h3>
-      <ModifyRecipe />
-      <br />
-      <hr />
-      <h3>Delete Recipe</h3>
-      <DeleteRecipe />
-      <br />
-      <hr />
-      <h3>Filter Options</h3>
+      <h4>Filter Options</h4>
 
       <RecipeFilter
         field='Author Name'
@@ -66,6 +80,7 @@ export function Recipes() {
         orderValue={sortOrder}
         onOrderChange={(orderValue) => setSortOrder(orderValue)}
       />
+      <br />
       <hr />
       <RecipeList recipes={recipes} />
     </div>

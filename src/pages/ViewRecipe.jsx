@@ -83,11 +83,13 @@ export function ViewRecipe({ recipeId }) {
           ))}
         </Helmet>
       )}
-      <Header />
-      <br />
+      <h1>{recipe.title}</h1>
       <hr />
-      <Link to='/'>Back to main page</Link>
-      <br />
+      <Header />
+      <hr />
+      <h3>
+        <Link to='/'>Main Page</Link>
+      </h3>
       <hr />
       {recipe ? (
         <div>

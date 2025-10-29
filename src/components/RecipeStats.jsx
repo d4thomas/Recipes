@@ -35,42 +35,51 @@ export function RecipeStats({ recipeId }) {
   }
   return (
     <div>
-      <b>{totalViews.data?.views} total views</b>
+      <br />
+      <div>This recipe has {totalViews.data?.views} total views!</div>
+      <br />
       <div style={{ width: 512 }}>
-        <h3>Daily Views</h3>
-        <VictoryChart domainPadding={16}>
-          <VictoryBar
-            labelComponent={<VictoryTooltip />}
-            data={dailyViews.data?.map((d) => ({
-              x: new Date(d._id),
-              y: d.views,
-              label: `${new Date(d._id).toLocaleDateString()}:${d.views} views`,
-            }))}
-          />
-        </VictoryChart>
+        <details>
+          <summary>Daily Views</summary>
+          <VictoryChart domainPadding={16}>
+            <VictoryBar
+              labelComponent={<VictoryTooltip />}
+              data={dailyViews.data?.map((d) => ({
+                x: new Date(d._id),
+                y: d.views,
+                label: `${new Date(d._id).toLocaleDateString()}:${
+                  d.views
+                } views`,
+              }))}
+            />
+          </VictoryChart>
+        </details>
       </div>
       <div style={{ width: 512 }}>
-        <h4>Daily Average Viewing Duration</h4>
-        <VictoryChart
-          domainPadding={16}
-          containerComponent={
-            <VictoryVoronoiContainer
-              voronoiDimension='x'
-              labels={({ datum }) =>
-                `${datum.x.toLocaleDateString()}: ${datum.y.toFixed(2)} minutes`
-              }
-              labelComponent={<VictoryTooltip />}
+        <details>
+          <summary>Daily Average Viewing Duration</summary>
+          <VictoryChart
+            domainPadding={16}
+            containerComponent={
+              <VictoryVoronoiContainer
+                voronoiDimension='x'
+                labels={({ datum }) =>
+                  `${datum.x.toLocaleDateString()}: ${datum.y.toFixed(
+                    2,
+                  )} minutes`
+                }
+                labelComponent={<VictoryTooltip />}
+              />
+            }
+          >
+            <VictoryLine
+              data={dailyDurations.data?.map((d) => ({
+                x: new Date(d._id),
+                y: d.averageDuration / (60 * 1000),
+              }))}
             />
-          }
-        >
-          {' '}
-          <VictoryLine
-            data={dailyDurations.data?.map((d) => ({
-              x: new Date(d._id),
-              y: d.averageDuration / (60 * 1000),
-            }))}
-          />{' '}
-        </VictoryChart>
+          </VictoryChart>
+        </details>
       </div>
     </div>
   )

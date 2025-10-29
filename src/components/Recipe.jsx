@@ -15,13 +15,27 @@ export function Recipe({
   return (
     <article>
       {fullRecipe ? (
-        <h3>{title}</h3>
+        <p>
+          <img
+            src={image}
+            alt={title}
+            style={{ width: '20%', height: 'auto' }}
+          />
+          <br />
+        </p>
       ) : (
         <Link to={`/recipes/${id}/${slug(title)}`}>
           <h3>{title}</h3>
+          <p>
+            {' '}
+            <img
+              src={image}
+              alt={title}
+              style={{ width: '20%', height: 'auto' }}
+            />
+          </p>
         </Link>
       )}
-      <img src={image} alt={title} style={{ width: '20%', height: 'auto' }} />
 
       {fullRecipe && (
         <div>
