@@ -40,7 +40,7 @@ async function simulateEvents() {
           title: `Test Recipe ${p}`,
           contents: `This is a test recipe ${p}`,
           image:
-            'https://www.nhlbi.nih.gov/sites/default/files/styles/16x9_crop/public/2025-03/Ultraprocessed%20foods%20display%202%20framed%20-%20shutterstock_2137640529_r.jpg?h=ab94ba44&itok=yrOIN-8T',
+            'https://t3.ftcdn.net/jpg/00/78/65/34/360_F_78653488_K9iVBFLjHcpZPJIYPjShYjbAiylKJv0U.jpg',
         })
         const randomLikes = Math.floor(Math.random() * 2) + 1
         await Recipe.findByIdAndUpdate(recipe._id, { likes: randomLikes })
