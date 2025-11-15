@@ -1,7 +1,5 @@
-// import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useMutation as useGraphQLMutation } from '@apollo/client/react/index.js'
 import { useState } from 'react'
-// import { createRecipe } from '../api/recipes.js'
 import { Link } from 'react-router-dom'
 import slug from 'slug'
 import { CREATE_RECIPE, GET_RECIPES } from '../api/graphql/recipes.js'
@@ -15,7 +13,7 @@ export function CreateRecipe() {
   const [createRecipe, { loading, data }] = useGraphQLMutation(CREATE_RECIPE, {
     variables: { title, contents, image },
     context: { headers: { Authorization: `Bearer ${token}` } },
-    refetchQueries: [{ query: GET_RECIPES }],
+    refetchQueries: [GET_RECIPES],
     onCompleted: () => {
       setTitle('')
       setContents('')
@@ -23,22 +21,9 @@ export function CreateRecipe() {
     },
   })
 
-  //   const queryClient = useQueryClient()
-
-  //   const createRecipeMutation = useMutation({
-  //     mutationFn: () => createRecipe(token, { title, contents, image }),
-  //     onSuccess: () => {
-  //       queryClient.invalidateQueries(['recipes'])
-  //       setTitle('')
-  //       setContents('')
-  //       setImage('')
-  //     },
-  //   })
-
   const handleSubmit = (e) => {
     e.preventDefault()
     createRecipe()
-    // createRecipeMutation.mutate()
   }
 
   if (!token) return <div>Please log in to create new recipes.</div>

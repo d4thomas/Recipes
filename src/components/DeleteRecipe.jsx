@@ -1,10 +1,6 @@
 import { useMutation as useGraphQLMutation } from '@apollo/client/react/index.js'
 import { useState } from 'react'
-import {
-  DELETE_RECIPE,
-  GET_RECIPES,
-  GET_RECIPES_BY_AUTHOR,
-} from '../api/graphql/recipes.js'
+import { DELETE_RECIPE, GET_RECIPES } from '../api/graphql/recipes.js'
 import { useAuth } from '../contexts/AuthContext.jsx'
 
 export function DeleteRecipe() {
@@ -13,7 +9,10 @@ export function DeleteRecipe() {
 
   const [deleteRecipe, { loading, data }] = useGraphQLMutation(DELETE_RECIPE, {
     context: { headers: { Authorization: `Bearer ${token}` } },
-    refetchQueries: [GET_RECIPES, GET_RECIPES_BY_AUTHOR],
+    refetchQueries: [GET_RECIPES],
+    onCompleted: () => {
+      setRecipeId('')
+    },
   })
 
   const handleSubmit = (e) => {

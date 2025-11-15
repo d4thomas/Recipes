@@ -36,6 +36,10 @@ export function RecipeNotification() {
     >
       <div>
         <strong>New Recipe Added!</strong>
+        <br />
+        <br />
+        <em>{notification.title}</em>
+        <br />
       </div>
       <br />
       <div>
