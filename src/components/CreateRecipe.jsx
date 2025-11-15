@@ -4,11 +4,7 @@ import { useState } from 'react'
 // import { createRecipe } from '../api/recipes.js'
 import { Link } from 'react-router-dom'
 import slug from 'slug'
-import {
-  CREATE_RECIPE,
-  GET_RECIPES,
-  GET_RECIPES_BY_AUTHOR,
-} from '../api/graphql/recipes.js'
+import { CREATE_RECIPE, GET_RECIPES } from '../api/graphql/recipes.js'
 import { useAuth } from '../contexts/AuthContext.jsx'
 
 export function CreateRecipe() {
@@ -19,7 +15,12 @@ export function CreateRecipe() {
   const [createRecipe, { loading, data }] = useGraphQLMutation(CREATE_RECIPE, {
     variables: { title, contents, image },
     context: { headers: { Authorization: `Bearer ${token}` } },
-    refetchQueries: [GET_RECIPES, GET_RECIPES_BY_AUTHOR],
+    refetchQueries: [{ query: GET_RECIPES }],
+    onCompleted: () => {
+      setTitle('')
+      setContents('')
+      setImage('')
+    },
   })
 
   //   const queryClient = useQueryClient()

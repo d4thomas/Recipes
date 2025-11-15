@@ -31,7 +31,7 @@ export const mutationResolver = {
     createRecipe: async (
       parent,
       { title, contents, tags, image },
-      { auth },
+      { auth, io },
     ) => {
       if (!auth) {
         throw new GraphQLError(
@@ -43,7 +43,19 @@ export const mutationResolver = {
           },
         )
       }
-      return await createRecipe(auth.sub, { title, contents, tags, image })
+      const newRecipe = await createRecipe(auth.sub, {
+        title,
+        contents,
+        tags,
+        image,
+      })
+
+      io.emit('recipe.new', {
+        id: newRecipe._id.toString(),
+        title: newRecipe.title,
+      })
+
+      return newRecipe
     },
 
     updateRecipe: async (

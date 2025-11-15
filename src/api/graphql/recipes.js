@@ -33,6 +33,7 @@ export const GET_RECIPES_BY_AUTHOR = gql`
   }
 `
 export const CREATE_RECIPE = gql`
+  ${RECIPE_FIELDS}
   mutation createRecipe(
     $title: String!
     $contents: String
@@ -45,13 +46,13 @@ export const CREATE_RECIPE = gql`
       tags: $tags
       image: $image
     ) {
-      id
-      title
+      ...RecipeFields
     }
   }
 `
 
 export const MODIFY_RECIPE = gql`
+  ${RECIPE_FIELDS}
   mutation updateRecipe(
     $id: String!
     $title: String
@@ -66,8 +67,7 @@ export const MODIFY_RECIPE = gql`
       tags: $tags
       image: $image
     ) {
-      id
-      title
+      ...RecipeFields
     }
   }
 `

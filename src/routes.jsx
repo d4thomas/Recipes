@@ -9,111 +9,118 @@ import { Signup } from './pages/Signup.jsx'
 import { Login } from './pages/Login.jsx'
 import { ViewRecipe } from './pages/ViewRecipe.jsx'
 import { TopRecipes } from './pages/TopRecipes.jsx'
+import { Layout } from './components/Layout.jsx'
 import { getRecipes, getRecipeById } from './api/recipes.js'
 import { getUserInfo } from './api/users.js'
 
 export const routes = [
   {
     path: '/',
-    loader: async () => {
-      const queryClient = new QueryClient()
-      const author = ''
-      const sortBy = 'createdAt'
-      const sortOrder = 'descending'
-      const recipes = await getRecipes({ author, sortBy, sortOrder })
-      await queryClient.prefetchQuery({
-        queryKey: ['recipes', { author, sortBy, sortOrder }],
-        queryFn: () => recipes,
-      })
-      const uniqueAuthors = recipes
-        .map((recipe) => recipe.author)
-        .filter((value, index, array) => array.indexOf(value) === index)
-      for (const userId of uniqueAuthors) {
-        await queryClient.prefetchQuery({
-          queryKey: ['users', userId],
-          queryFn: () => getUserInfo(userId),
-        })
-      }
-      return dehydrate(queryClient)
-    },
-    Component() {
-      const dehydratedState = useLoaderData()
-      return (
-        <HydrationBoundary state={dehydratedState}>
-          <Recipes />
-        </HydrationBoundary>
-      )
-    },
-  },
-  {
-    path: '/signup',
-    element: <Signup />,
-  },
-  {
-    path: '/login',
-    element: <Login />,
-  },
-  {
-    path: '/recipes/:recipeId/:slug?',
-    loader: async ({ params }) => {
-      const recipeId = params.recipeId
-      const queryClient = new QueryClient()
-      const recipe = await getRecipeById(recipeId)
-      await queryClient.prefetchQuery({
-        queryKey: ['recipe', recipeId],
-        queryFn: () => recipe,
-      })
-      if (recipe?.author) {
-        await queryClient.prefetchQuery({
-          queryKey: ['users', recipe.author],
-          queryFn: () => getUserInfo(recipe.author),
-        })
-      }
-      return { dehydratedState: dehydrate(queryClient), recipeId }
-    },
-    Component() {
-      const { dehydratedState, recipeId } = useLoaderData()
-      return (
-        <HydrationBoundary state={dehydratedState}>
-          <ViewRecipe recipeId={recipeId} />
-        </HydrationBoundary>
-      )
-    },
-  },
-  {
-    path: '/top',
-    loader: async () => {
-      const queryClient = new QueryClient()
-      const recipes = await getRecipes({
-        author: '',
-        sortBy: 'likes',
-        sortOrder: 'descending',
-      })
-      await queryClient.prefetchQuery({
-        queryKey: [
-          'recipes',
-          { author: '', sortBy: 'likes', sortOrder: 'descending' },
-        ],
-        queryFn: () => recipes,
-      })
-      const uniqueAuthors = recipes
-        .map((recipe) => recipe.author)
-        .filter((value, index, array) => array.indexOf(value) === index)
-      for (const userId of uniqueAuthors) {
-        await queryClient.prefetchQuery({
-          queryKey: ['users', userId],
-          queryFn: () => getUserInfo(userId),
-        })
-      }
-      return dehydrate(queryClient)
-    },
-    Component() {
-      const dehydratedState = useLoaderData()
-      return (
-        <HydrationBoundary state={dehydratedState}>
-          <TopRecipes />
-        </HydrationBoundary>
-      )
-    },
+    element: <Layout />,
+    children: [
+      {
+        index: true,
+        loader: async () => {
+          const queryClient = new QueryClient()
+          const author = ''
+          const sortBy = 'createdAt'
+          const sortOrder = 'descending'
+          const recipes = await getRecipes({ author, sortBy, sortOrder })
+          await queryClient.prefetchQuery({
+            queryKey: ['recipes', { author, sortBy, sortOrder }],
+            queryFn: () => recipes,
+          })
+          const uniqueAuthors = recipes
+            .map((recipe) => recipe.author)
+            .filter((value, index, array) => array.indexOf(value) === index)
+          for (const userId of uniqueAuthors) {
+            await queryClient.prefetchQuery({
+              queryKey: ['users', userId],
+              queryFn: () => getUserInfo(userId),
+            })
+          }
+          return dehydrate(queryClient)
+        },
+        Component() {
+          const dehydratedState = useLoaderData()
+          return (
+            <HydrationBoundary state={dehydratedState}>
+              <Recipes />
+            </HydrationBoundary>
+          )
+        },
+      },
+      {
+        path: 'signup',
+        element: <Signup />,
+      },
+      {
+        path: 'login',
+        element: <Login />,
+      },
+      {
+        path: 'recipes/:recipeId/:slug?',
+        loader: async ({ params }) => {
+          const recipeId = params.recipeId
+          const queryClient = new QueryClient()
+          const recipe = await getRecipeById(recipeId)
+          await queryClient.prefetchQuery({
+            queryKey: ['recipe', recipeId],
+            queryFn: () => recipe,
+          })
+          if (recipe?.author) {
+            await queryClient.prefetchQuery({
+              queryKey: ['users', recipe.author],
+              queryFn: () => getUserInfo(recipe.author),
+            })
+          }
+          return { dehydratedState: dehydrate(queryClient), recipeId }
+        },
+        Component() {
+          const { dehydratedState, recipeId } = useLoaderData()
+          return (
+            <HydrationBoundary state={dehydratedState}>
+              <ViewRecipe recipeId={recipeId} />
+            </HydrationBoundary>
+          )
+        },
+      },
+      {
+        path: 'top',
+        loader: async () => {
+          const queryClient = new QueryClient()
+          const recipes = await getRecipes({
+            author: '',
+            sortBy: 'likes',
+            sortOrder: 'descending',
+          })
+          await queryClient.prefetchQuery({
+            queryKey: [
+              'recipes',
+              { author: '', sortBy: 'likes', sortOrder: 'descending' },
+            ],
+            queryFn: () => recipes,
+          })
+          const uniqueAuthors = recipes
+            .map((recipe) => recipe.author)
+            .filter((value, index, array) => array.indexOf(value) === index)
+          for (const userId of uniqueAuthors) {
+            await queryClient.prefetchQuery({
+              queryKey: ['users', userId],
+              queryFn: () => getUserInfo(userId),
+            })
+          }
+          return dehydrate(queryClient)
+        },
+        Component() {
+          const dehydratedState = useLoaderData()
+          return (
+            <HydrationBoundary state={dehydratedState}>
+              <TopRecipes />
+            </HydrationBoundary>
+          )
+        },
+      },
+    ],
   },
 ]

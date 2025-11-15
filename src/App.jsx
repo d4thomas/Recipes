@@ -4,6 +4,7 @@ import { ApolloClient, InMemoryCache } from '@apollo/client/core/index.js'
 import { HelmetProvider } from 'react-helmet-async'
 import PropTypes from 'prop-types'
 import { AuthContextProvider } from './contexts/AuthContext.jsx'
+import { SocketIOContextProvider } from './contexts/SocketIOContext.jsx'
 
 const queryClient = new QueryClient()
 
@@ -17,7 +18,9 @@ export function App({ children }) {
     <HelmetProvider>
       <ApolloProvider client={apolloClient}>
         <QueryClientProvider client={queryClient}>
-          <AuthContextProvider>{children}</AuthContextProvider>
+          <AuthContextProvider>
+            <SocketIOContextProvider>{children}</SocketIOContextProvider>
+          </AuthContextProvider>
         </QueryClientProvider>
       </ApolloProvider>
     </HelmetProvider>
@@ -25,5 +28,5 @@ export function App({ children }) {
 }
 
 App.propTypes = {
-  children: PropTypes.element.isRequired,
+  children: PropTypes.node.isRequired,
 }
