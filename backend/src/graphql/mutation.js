@@ -51,7 +51,7 @@ export const mutationResolver = {
         image,
       })
 
-      sendRecipeNotification(io, newRecipe)
+      await sendRecipeNotification(io, newRecipe, auth.sub)
 
       return newRecipe
     },

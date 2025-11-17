@@ -1,6 +1,7 @@
 import { createContext, useState, useContext, useEffect } from 'react'
 import { io } from 'socket.io-client'
 import PropTypes from 'prop-types'
+import { useAuth } from './AuthContext'
 
 const SocketIOContext = createContext({
   socket: null,
@@ -12,10 +13,16 @@ export const SocketIOContextProvider = ({ children }) => {
   const [socket, setSocket] = useState(null)
   const [status, setStatus] = useState('waiting')
   const [error, setError] = useState(null)
+  const [token] = useAuth()
 
   useEffect(() => {
     const socket = io(
       import.meta.env.VITE_SOCKET_HOST || 'http://localhost:3001',
+      {
+        auth: {
+          token,
+        },
+      },
     )
     socket.on('connect', () => {
       setStatus('connected')
@@ -33,7 +40,7 @@ export const SocketIOContextProvider = ({ children }) => {
         socket.disconnect()
       }
     }
-  }, [])
+  }, [token])
 
   return (
     <SocketIOContext.Provider value={{ socket, status, error }}>
