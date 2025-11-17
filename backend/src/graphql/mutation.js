@@ -6,6 +6,7 @@ import {
   deleteRecipe,
   likeRecipe,
 } from '../services/recipes.js'
+import { sendRecipeNotification } from '../services/notification.js'
 
 export const mutationSchema = `#graphql
   type Mutation {
@@ -50,10 +51,7 @@ export const mutationResolver = {
         image,
       })
 
-      io.emit('recipe.new', {
-        id: newRecipe._id.toString(),
-        title: newRecipe.title,
-      })
+      sendRecipeNotification(io, newRecipe)
 
       return newRecipe
     },
